@@ -32,13 +32,22 @@ namespace CodingChallenge.Data.Classes
 
         #endregion
 
-        private readonly decimal _lado;
+        protected decimal _lado;
+        protected static int CantidadTotal;
+        protected static decimal AreasTotal;
+        protected static decimal PerimetrosTotal;
+
 
         public int Tipo { get; set; }
 
         public FormaGeometrica(int tipo, decimal ancho)
         {
             Tipo = tipo;
+            _lado = ancho;
+        }
+
+        public FormaGeometrica(decimal ancho)
+        {
             _lado = ancho;
         }
 
@@ -77,35 +86,53 @@ namespace CodingChallenge.Data.Classes
 
                 for (var i = 0; i < formas.Count; i++)
                 {
-                    if (formas[i].Tipo == Cuadrado)
-                    {
-                        numeroCuadrados++;
-                        areaCuadrados += formas[i].CalcularArea();
-                        perimetroCuadrados += formas[i].CalcularPerimetro();
-                    }
-                    if (formas[i].Tipo == Circulo)
-                    {
-                        numeroCirculos++;
-                        areaCirculos += formas[i].CalcularArea();
-                        perimetroCirculos += formas[i].CalcularPerimetro();
-                    }
-                    if (formas[i].Tipo == TrianguloEquilatero)
-                    {
-                        numeroTriangulos++;
-                        areaTriangulos += formas[i].CalcularArea();
-                        perimetroTriangulos += formas[i].CalcularPerimetro();
-                    }
+                    //if (formas[i].Tipo == Cuadrado)
+                    //{
+                    formas[i].IncrementarCantidad();
+                    areaCuadrados += formas[i].CalcularArea();
+                    perimetroCuadrados += formas[i].CalcularPerimetro();
+                    //}
+                    //if (formas[i].Tipo == Circulo)
+                    //{
+                    //    numeroCirculos++;
+                    //    areaCirculos += formas[i].CalcularArea();
+                    //    perimetroCirculos += formas[i].CalcularPerimetro();
+                    //}
+                    //if (formas[i].Tipo == TrianguloEquilatero)
+                    //{
+                    //    numeroTriangulos++;
+                    //    areaTriangulos += formas[i].CalcularArea();
+                    //    perimetroTriangulos += formas[i].CalcularPerimetro();
+                    //}
                 }
-                
-                sb.Append(ObtenerLinea(numeroCuadrados, areaCuadrados, perimetroCuadrados, Cuadrado, idioma));
-                sb.Append(ObtenerLinea(numeroCirculos, areaCirculos, perimetroCirculos, Circulo, idioma));
-                sb.Append(ObtenerLinea(numeroTriangulos, areaTriangulos, perimetroTriangulos, TrianguloEquilatero, idioma));
+
+                sb.Append(ObtenerLinea(
+                    Classes.Cuadrado.GetCantidad(),
+                    Classes.Cuadrado.GetTotalAreas(),
+                    Classes.Cuadrado.GetTotalPerimetros(),
+                    Cuadrado,
+                    idioma));
+                sb.Append(ObtenerLinea(
+                    Classes.Circulo.GetCantidad(),
+                    Classes.Circulo.GetTotalAreas(),
+                    Classes.Circulo.GetTotalPerimetros(),
+                    Circulo,
+                    idioma));
+                sb.Append(ObtenerLinea(
+                    Classes.Triangulo.GetCantidad(),
+                    Classes.Triangulo.GetTotalAreas(),
+                    Classes.Triangulo.GetTotalPerimetros(), 
+                    TrianguloEquilatero, 
+                    idioma));
 
                 // FOOTER
                 sb.Append("TOTAL:<br/>");
-                sb.Append(numeroCuadrados + numeroCirculos + numeroTriangulos + " " + (idioma == Castellano ? "formas" : "shapes") + " ");
-                sb.Append((idioma == Castellano ? "Perimetro " : "Perimeter ") + (perimetroCuadrados + perimetroTriangulos + perimetroCirculos).ToString("#.##") + " ");
-                sb.Append("Area " + (areaCuadrados + areaCirculos + areaTriangulos).ToString("#.##"));
+                sb.Append(CantidadTotal + " " + (idioma == Castellano ? "formas" : "shapes") + " ");
+                sb.Append(
+                    (idioma == Castellano ? "Perimetro " : "Perimeter ") + 
+                    (PerimetrosTotal).ToString("#.##") +
+                    " ");
+                sb.Append("Area " + (AreasTotal).ToString("#.##"));
             }
 
             return sb.ToString();
@@ -142,7 +169,7 @@ namespace CodingChallenge.Data.Classes
             return string.Empty;
         }
 
-        public decimal CalcularArea()
+        public virtual decimal CalcularArea()
         {
             switch (Tipo)
             {
@@ -154,7 +181,7 @@ namespace CodingChallenge.Data.Classes
             }
         }
 
-        public decimal CalcularPerimetro()
+        public virtual decimal CalcularPerimetro()
         {
             switch (Tipo)
             {
@@ -165,5 +192,18 @@ namespace CodingChallenge.Data.Classes
                     throw new ArgumentOutOfRangeException(@"Forma desconocida");
             }
         }
+
+        public virtual void IncrementarCantidad()
+        { }
+
+
+        public static int GetCantidad()
+        { return 0; }
+
+        public static decimal GetTotalAreas()
+        { return 0; }
+
+        public static decimal GetTotalPerimetros()
+        { return 0; }
     }
 }

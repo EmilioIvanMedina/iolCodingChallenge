@@ -49,5 +49,43 @@ namespace CodingChallenge.Data.Classes
 
         public static decimal GetTotalPerimetros()
         { return Perimetros; }
+
+        public static string ObtenerLineaDeClase(int idioma)
+        {
+            if (GetCantidad() > 0)
+            {
+                string linea;
+                if (idioma == Castellano)
+                    linea = $"{GetCantidad()} {TraducirFormaDeClase(GetCantidad(), idioma)} | " +
+                        $"Area {GetTotalAreas():#.##} | " +
+                        $"Perimetro {GetTotalPerimetros():#.##} <br/>";
+                else
+                    linea = $"{GetCantidad()} {TraducirFormaDeClase(GetCantidad(), idioma)} | " +
+                        $"Area {GetTotalAreas():#.##} | " +
+                        $"Perimeter {GetTotalPerimetros():#.##} <br/>";
+
+                RestartCounters();
+                return linea;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        private static string TraducirFormaDeClase(int cantidad, int idioma)
+        {
+            if (idioma == Castellano)
+                return cantidad == 1 ? "Cuadrado" : "Cuadrados";
+            else
+                return cantidad == 1 ? "Square" : "Squares";
+        }
+
+        private static void RestartCounters()
+        {
+            Cantidad = 0;
+            Areas = 0;
+            Perimetros = 0;
+        }
     }
 }

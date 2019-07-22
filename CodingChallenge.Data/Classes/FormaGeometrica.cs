@@ -21,7 +21,7 @@ namespace CodingChallenge.Data.Classes
         public const int Cuadrado = 1;
         public const int TrianguloEquilatero = 2;
         public const int Circulo = 3;
-        public const int Trapecio = 4;
+        public const int Rectangulo = 4;
 
         #endregion
 
@@ -45,6 +45,8 @@ namespace CodingChallenge.Data.Classes
             Tipo = tipo;
             _lado = ancho;
         }
+
+        public FormaGeometrica() { }
 
         public FormaGeometrica(decimal ancho)
         {
@@ -72,58 +74,16 @@ namespace CodingChallenge.Data.Classes
                     // default es inglés
                     sb.Append("<h1>Shapes report</h1>");
 
-                var numeroCuadrados = 0;
-                var numeroCirculos = 0;
-                var numeroTriangulos = 0;
-
-                var areaCuadrados = 0m;
-                var areaCirculos = 0m;
-                var areaTriangulos = 0m;
-
-                var perimetroCuadrados = 0m;
-                var perimetroCirculos = 0m;
-                var perimetroTriangulos = 0m;
-
                 for (var i = 0; i < formas.Count; i++)
                 {
-                    //if (formas[i].Tipo == Cuadrado)
-                    //{
                     formas[i].IncrementarCantidad();
-                    areaCuadrados += formas[i].CalcularArea();
-                    perimetroCuadrados += formas[i].CalcularPerimetro();
-                    //}
-                    //if (formas[i].Tipo == Circulo)
-                    //{
-                    //    numeroCirculos++;
-                    //    areaCirculos += formas[i].CalcularArea();
-                    //    perimetroCirculos += formas[i].CalcularPerimetro();
-                    //}
-                    //if (formas[i].Tipo == TrianguloEquilatero)
-                    //{
-                    //    numeroTriangulos++;
-                    //    areaTriangulos += formas[i].CalcularArea();
-                    //    perimetroTriangulos += formas[i].CalcularPerimetro();
-                    //}
+                    formas[i].CalcularArea();
+                    formas[i].CalcularPerimetro();
                 }
 
-                sb.Append(ObtenerLinea(
-                    Classes.Cuadrado.GetCantidad(),
-                    Classes.Cuadrado.GetTotalAreas(),
-                    Classes.Cuadrado.GetTotalPerimetros(),
-                    Cuadrado,
-                    idioma));
-                sb.Append(ObtenerLinea(
-                    Classes.Circulo.GetCantidad(),
-                    Classes.Circulo.GetTotalAreas(),
-                    Classes.Circulo.GetTotalPerimetros(),
-                    Circulo,
-                    idioma));
-                sb.Append(ObtenerLinea(
-                    Classes.Triangulo.GetCantidad(),
-                    Classes.Triangulo.GetTotalAreas(),
-                    Classes.Triangulo.GetTotalPerimetros(), 
-                    TrianguloEquilatero, 
-                    idioma));
+                sb.Append(Classes.Cuadrado.ObtenerLineaDeClase(idioma));
+                sb.Append(Classes.Circulo.ObtenerLineaDeClase(idioma));
+                sb.Append(Classes.Triangulo.ObtenerLineaDeClase(idioma));
 
                 // FOOTER
                 sb.Append("TOTAL:<br/>");
@@ -134,6 +94,8 @@ namespace CodingChallenge.Data.Classes
                     " ");
                 sb.Append("Area " + (AreasTotal).ToString("#.##"));
             }
+
+            RestartCounters();
 
             return sb.ToString();
         }
@@ -196,14 +158,11 @@ namespace CodingChallenge.Data.Classes
         public virtual void IncrementarCantidad()
         { }
 
-
-        public static int GetCantidad()
-        { return 0; }
-
-        public static decimal GetTotalAreas()
-        { return 0; }
-
-        public static decimal GetTotalPerimetros()
-        { return 0; }
+        private static void RestartCounters()
+        {
+            CantidadTotal = 0;
+            AreasTotal = 0;
+            PerimetrosTotal = 0;
+        }
     }
 }

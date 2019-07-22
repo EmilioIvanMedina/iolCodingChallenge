@@ -14,25 +14,14 @@ using System.Text;
 
 namespace CodingChallenge.Data.Classes
 {
-    public class FormaGeometrica
+    public class FormaGeometrica : Traduccion
     {
-        #region Formas
 
-        public const int Cuadrado = 1;
-        public const int TrianguloEquilatero = 2;
-        public const int Circulo = 3;
-        public const int Trapecio = 4;
+        protected decimal _lado;
+        protected static int CantidadTotal;
+        protected static decimal AreasTotal;
+        protected static decimal PerimetrosTotal;
 
-        #endregion
-
-        #region Idiomas
-
-        public const int Castellano = 1;
-        public const int Ingles = 2;
-
-        #endregion
-
-        private readonly decimal _lado;
 
         public int Tipo { get; set; }
 
@@ -42,71 +31,62 @@ namespace CodingChallenge.Data.Classes
             _lado = ancho;
         }
 
+        public FormaGeometrica() { }
+
+        public FormaGeometrica(decimal ancho)
+        {
+            _lado = ancho;
+        }
+
+        public FormaGeometrica(decimal ancho, decimal altura)
+        {
+        }
+
+        public FormaGeometrica(
+            decimal baseSuperior, 
+            decimal baseInferior, 
+            decimal ladoIzquierdo, 
+            decimal ladoDerecho,
+            decimal altura)
+        {
+        }
+
         public static string Imprimir(List<FormaGeometrica> formas, int idioma)
         {
             var sb = new StringBuilder();
 
             if (!formas.Any())
             {
-                if (idioma == Castellano)
-                    sb.Append("<h1>Lista vacía de formas!</h1>");
-                else
-                    sb.Append("<h1>Empty list of shapes!</h1>");
+                sb.Append(PrintEmptyList(idioma));
             }
             else
             {
                 // Hay por lo menos una forma
                 // HEADER
-                if (idioma == Castellano)
-                    sb.Append("<h1>Reporte de Formas</h1>");
-                else
-                    // default es inglés
-                    sb.Append("<h1>Shapes report</h1>");
 
-                var numeroCuadrados = 0;
-                var numeroCirculos = 0;
-                var numeroTriangulos = 0;
-
-                var areaCuadrados = 0m;
-                var areaCirculos = 0m;
-                var areaTriangulos = 0m;
-
-                var perimetroCuadrados = 0m;
-                var perimetroCirculos = 0m;
-                var perimetroTriangulos = 0m;
+                sb.Append(PrintHeader(idioma));
 
                 for (var i = 0; i < formas.Count; i++)
                 {
-                    if (formas[i].Tipo == Cuadrado)
-                    {
-                        numeroCuadrados++;
-                        areaCuadrados += formas[i].CalcularArea();
-                        perimetroCuadrados += formas[i].CalcularPerimetro();
-                    }
-                    if (formas[i].Tipo == Circulo)
-                    {
-                        numeroCirculos++;
-                        areaCirculos += formas[i].CalcularArea();
-                        perimetroCirculos += formas[i].CalcularPerimetro();
-                    }
-                    if (formas[i].Tipo == TrianguloEquilatero)
-                    {
-                        numeroTriangulos++;
-                        areaTriangulos += formas[i].CalcularArea();
-                        perimetroTriangulos += formas[i].CalcularPerimetro();
-                    }
+                    formas[i].IncrementarCantidad();
+                    formas[i].CalcularArea();
+                    formas[i].CalcularPerimetro();
                 }
-                
-                sb.Append(ObtenerLinea(numeroCuadrados, areaCuadrados, perimetroCuadrados, Cuadrado, idioma));
-                sb.Append(ObtenerLinea(numeroCirculos, areaCirculos, perimetroCirculos, Circulo, idioma));
-                sb.Append(ObtenerLinea(numeroTriangulos, areaTriangulos, perimetroTriangulos, TrianguloEquilatero, idioma));
+
+                sb.Append(Square.ObtenerLineaDeClase(idioma));
+                sb.Append(Circle.ObtenerLineaDeClase(idioma));
+                sb.Append(Triangle.ObtenerLineaDeClase(idioma));
+                sb.Append(Rectangle.ObtenerLineaDeClase(idioma));
+                sb.Append(Trapezoid.ObtenerLineaDeClase(idioma));
 
                 // FOOTER
                 sb.Append("TOTAL:<br/>");
-                sb.Append(numeroCuadrados + numeroCirculos + numeroTriangulos + " " + (idioma == Castellano ? "formas" : "shapes") + " ");
-                sb.Append((idioma == Castellano ? "Perimetro " : "Perimeter ") + (perimetroCuadrados + perimetroTriangulos + perimetroCirculos).ToString("#.##") + " ");
-                sb.Append("Area " + (areaCuadrados + areaCirculos + areaTriangulos).ToString("#.##"));
+                sb.Append(CantidadTotal + " " + TraducirForma(idioma) + " ");
+                sb.Append((TraducirPerimetro(idioma) + " ") + (PerimetrosTotal).ToString("#.##") +" ");
+                sb.Append(TraducirArea(idioma) + " " + (AreasTotal).ToString("#.##"));
             }
+
+            RestartCounters();
 
             return sb.ToString();
         }
@@ -142,7 +122,7 @@ namespace CodingChallenge.Data.Classes
             return string.Empty;
         }
 
-        public decimal CalcularArea()
+        public virtual decimal CalcularArea()
         {
             switch (Tipo)
             {
@@ -154,7 +134,7 @@ namespace CodingChallenge.Data.Classes
             }
         }
 
-        public decimal CalcularPerimetro()
+        public virtual decimal CalcularPerimetro()
         {
             switch (Tipo)
             {
@@ -164,6 +144,16 @@ namespace CodingChallenge.Data.Classes
                 default:
                     throw new ArgumentOutOfRangeException(@"Forma desconocida");
             }
+        }
+
+        public virtual void IncrementarCantidad()
+        { }
+
+        private static void RestartCounters()
+        {
+            CantidadTotal = 0;
+            AreasTotal = 0;
+            PerimetrosTotal = 0;
         }
     }
 }

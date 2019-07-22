@@ -18,7 +18,6 @@ namespace CodingChallenge.Data.Classes
     {
 
         protected decimal _lado;
-        protected decimal _alto;
         protected static int CantidadTotal;
         protected static decimal AreasTotal;
         protected static decimal PerimetrosTotal;
@@ -39,11 +38,17 @@ namespace CodingChallenge.Data.Classes
             _lado = ancho;
         }
 
-        public FormaGeometrica(decimal ancho, decimal altura, int tipo)
+        public FormaGeometrica(decimal ancho, decimal altura)
         {
-            Tipo = tipo;
-            _lado = ancho;
-            _alto = altura;
+        }
+
+        public FormaGeometrica(
+            decimal baseSuperior, 
+            decimal baseInferior, 
+            decimal ladoIzquierdo, 
+            decimal ladoDerecho,
+            decimal altura)
+        {
         }
 
         public static string Imprimir(List<FormaGeometrica> formas, int idioma)
@@ -52,20 +57,14 @@ namespace CodingChallenge.Data.Classes
 
             if (!formas.Any())
             {
-                if (idioma == Castellano)
-                    sb.Append("<h1>Lista vacía de formas!</h1>");
-                else
-                    sb.Append("<h1>Empty list of shapes!</h1>");
+                sb.Append(PrintEmptyList(idioma));
             }
             else
             {
                 // Hay por lo menos una forma
                 // HEADER
-                if (idioma == Castellano)
-                    sb.Append("<h1>Reporte de Formas</h1>");
-                else
-                    // default es inglés
-                    sb.Append("<h1>Shapes report</h1>");
+
+                sb.Append(PrintHeader(idioma));
 
                 for (var i = 0; i < formas.Count; i++)
                 {
@@ -74,19 +73,17 @@ namespace CodingChallenge.Data.Classes
                     formas[i].CalcularPerimetro();
                 }
 
-                sb.Append(Classes.Cuadrado.ObtenerLineaDeClase(idioma));
-                sb.Append(Classes.Circulo.ObtenerLineaDeClase(idioma));
-                sb.Append(Classes.Triangulo.ObtenerLineaDeClase(idioma));
-                sb.Append(Classes.Rectangulo.ObtenerLineaDeClase(idioma));
+                sb.Append(Square.ObtenerLineaDeClase(idioma));
+                sb.Append(Circle.ObtenerLineaDeClase(idioma));
+                sb.Append(Triangle.ObtenerLineaDeClase(idioma));
+                sb.Append(Rectangle.ObtenerLineaDeClase(idioma));
+                sb.Append(Trapezoid.ObtenerLineaDeClase(idioma));
 
                 // FOOTER
                 sb.Append("TOTAL:<br/>");
-                sb.Append(CantidadTotal + " " + (idioma == Castellano ? "formas" : "shapes") + " ");
-                sb.Append(
-                    (idioma == Castellano ? "Perimetro " : "Perimeter ") + 
-                    (PerimetrosTotal).ToString("#.##") +
-                    " ");
-                sb.Append("Area " + (AreasTotal).ToString("#.##"));
+                sb.Append(CantidadTotal + " " + TraducirForma(idioma) + " ");
+                sb.Append((TraducirPerimetro(idioma) + " ") + (PerimetrosTotal).ToString("#.##") +" ");
+                sb.Append(TraducirArea(idioma) + " " + (AreasTotal).ToString("#.##"));
             }
 
             RestartCounters();

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CodingChallenge.Data.Classes
 {
-    public class Cuadrado : FormaGeometrica
+    public class Square : FormaGeometrica
     {
         private static int Cantidad;
         private static decimal Areas;
         private static decimal Perimetros;
 
-        public Cuadrado(decimal ancho) : base(ancho)
+        public Square(decimal ancho) : base(ancho)
         {
             _lado = ancho;
             Tipo = Cuadrado;

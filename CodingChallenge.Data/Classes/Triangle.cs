@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CodingChallenge.Data.Classes
 {
-    public class Triangulo : FormaGeometrica
+    public class Triangle : FormaGeometrica
     {
         private static int Cantidad;
         private static decimal Areas;
         private static decimal Perimetros;
 
-        public Triangulo(decimal ancho) : base(ancho)
+        public Triangle(decimal ancho) : base(ancho)
         {
             _lado = ancho;
             Tipo = TrianguloEquilatero;

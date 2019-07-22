@@ -52,12 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Circulo.cs" />
-    <Compile Include="Classes\Cuadrado.cs" />
+    <Compile Include="Classes\Circle.cs" />
+    <Compile Include="Classes\Square.cs" />
     <Compile Include="Classes\FormaGeometrica.cs" />
-    <Compile Include="Classes\Rectangulo.cs" />
+    <Compile Include="Classes\Rectangle.cs" />
     <Compile Include="Classes\Traduccion.cs" />
-    <Compile Include="Classes\Triangulo.cs" />
+    <Compile Include="Classes\Trapezoid.cs" />
+    <Compile Include="Classes\Triangle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

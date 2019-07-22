@@ -6,14 +6,19 @@ using System.Threading.Tasks;
 
 namespace CodingChallenge.Data.Classes
 {
-    public class Rectangulo : FormaGeometrica
+    public class Rectangle : FormaGeometrica
     {
+        protected decimal _alto;
+
         private static int Cantidad;
         private static decimal Areas;
         private static decimal Perimetros;
 
-        public Rectangulo(decimal ancho, decimal altura, int tipo) : base(ancho, altura, tipo)
+        public Rectangle(decimal ancho, decimal altura) : base(ancho, altura)
         {
+            _lado = ancho;
+            _alto = altura;
+            Tipo = Rectangulo;
         }
 
         public override decimal CalcularArea()

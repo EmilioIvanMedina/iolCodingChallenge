@@ -14,25 +14,11 @@ using System.Text;
 
 namespace CodingChallenge.Data.Classes
 {
-    public class FormaGeometrica
+    public class FormaGeometrica : Traduccion
     {
-        #region Formas
-
-        public const int Cuadrado = 1;
-        public const int TrianguloEquilatero = 2;
-        public const int Circulo = 3;
-        public const int Rectangulo = 4;
-
-        #endregion
-
-        #region Idiomas
-
-        public const int Castellano = 1;
-        public const int Ingles = 2;
-
-        #endregion
 
         protected decimal _lado;
+        protected decimal _alto;
         protected static int CantidadTotal;
         protected static decimal AreasTotal;
         protected static decimal PerimetrosTotal;
@@ -51,6 +37,13 @@ namespace CodingChallenge.Data.Classes
         public FormaGeometrica(decimal ancho)
         {
             _lado = ancho;
+        }
+
+        public FormaGeometrica(decimal ancho, decimal altura, int tipo)
+        {
+            Tipo = tipo;
+            _lado = ancho;
+            _alto = altura;
         }
 
         public static string Imprimir(List<FormaGeometrica> formas, int idioma)
@@ -84,6 +77,7 @@ namespace CodingChallenge.Data.Classes
                 sb.Append(Classes.Cuadrado.ObtenerLineaDeClase(idioma));
                 sb.Append(Classes.Circulo.ObtenerLineaDeClase(idioma));
                 sb.Append(Classes.Triangulo.ObtenerLineaDeClase(idioma));
+                sb.Append(Classes.Rectangulo.ObtenerLineaDeClase(idioma));
 
                 // FOOTER
                 sb.Append("TOTAL:<br/>");

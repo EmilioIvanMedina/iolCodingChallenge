@@ -6,21 +6,19 @@ using System.Threading.Tasks;
 
 namespace CodingChallenge.Data.Classes
 {
-    public class Triangulo : FormaGeometrica
+    public class Rectangulo : FormaGeometrica
     {
         private static int Cantidad;
         private static decimal Areas;
         private static decimal Perimetros;
 
-        public Triangulo(decimal ancho) : base(ancho)
+        public Rectangulo(decimal ancho, decimal altura, int tipo) : base(ancho, altura, tipo)
         {
-            _lado = ancho;
-            Tipo = TrianguloEquilatero;
         }
 
         public override decimal CalcularArea()
         {
-            decimal area = ((decimal)Math.Sqrt(3) / 4) * _lado * _lado;
+            decimal area = _lado * _alto;
             Areas += area;
             AreasTotal += area;
             return area;
@@ -28,7 +26,7 @@ namespace CodingChallenge.Data.Classes
 
         public override decimal CalcularPerimetro()
         {
-            decimal perimetro = _lado * 3;
+            decimal perimetro = _lado * 2 + _alto * 2;
             Perimetros += perimetro;
             PerimetrosTotal += perimetro;
             return perimetro;
@@ -42,7 +40,7 @@ namespace CodingChallenge.Data.Classes
 
         public static string ObtenerLineaDeClase(int idioma)
         {
-            string result = ObtenerLinea(Cantidad, Areas, Perimetros, FormaGeometrica.TrianguloEquilatero, idioma);
+            string result = ObtenerLinea(Cantidad, Areas, Perimetros, FormaGeometrica.Rectangulo, idioma);
             RestartCounters();
             return result;
         }
